@@ -2,6 +2,7 @@
 
 Testing and checking functionality
 
+As usual a lot of usefull information you can find here: [Bitcoin StackExchange - RegTest](http://bitcoin.stackexchange.com/search?q=regtest)
 
 ## Instal bitcoin core
 
@@ -25,8 +26,6 @@ regtest=1
 chmod 0600 bitcoin.conf
 ```
 
-[Bitcoin StackExchange - RegTest](http://bitcoin.stackexchange.com/search?q=regtest)
-
 
 ## Regtest server
 
@@ -43,8 +42,8 @@ Stop server
 
 ## Generate first bitcoins
 
-[Developer examples](https://bitcoin.org/en/developer-examples)<br>
-[bitcoin-cli commands](https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_calls_list)
+* [Developer examples](https://bitcoin.org/en/developer-examples)
+* [bitcoin-cli commands](https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_calls_list)
 
 Generate 101 block
 ```
@@ -62,31 +61,33 @@ Should be `50.00`
 ## Performing transactions and retrieving balance
 
 Example of custom key pare:
-*Pivate:* cQ3JdUMMbtUW8ibfLXWXZhRp6HFBBLk3Nqog5QssekY7df8y8ZUk
-*Public:* msxMqjP2bzBSdi5sg8zhFNxduK7FZvteEG
+* *Pivate:* cQ3JdUMMbtUW8ibfLXWXZhRp6HFBBLk3Nqog5QssekY7df8y8ZUk
+* *Public:* msxMqjP2bzBSdi5sg8zhFNxduK7FZvteEG
 
 Send bitcoins from pull to the address
 ```
-/usr/local/bin/bitcoind/bin/bitcoin-cli -regtest sendtoaddress msxMqjP2bzBSdi5sg8zhFNxduK7FZvteEG 10.00
+/usr/local/bin/bitcoind/bin/bitcoin-cli -regtest sendtoaddress [..publicKey..] 10.00
 ```
 
 Get amount of bitcoin address
 ```
-/usr/local/bin/bitcoind/bin/bitcoin-cli -regtest getbalance msxMqjP2bzBSdi5sg8zhFNxduK7FZvteEG
+/usr/local/bin/bitcoind/bin/bitcoin-cli -regtest getbalance [..publicKey..]
 ```
 
 Returns array of unspent transaction inputs in this wallet
 ```
 /usr/local/bin/bitcoind/bin/bitcoin-cli -regtest listunspent
 ```
+
 This list will output only confirmed transactions. Therefore it will be empty now, to get list of unconfirmed transactions use same command with 0:
+
 ```
 /usr/local/bin/bitcoind/bin/bitcoin-cli -regtest listunspent 0
 ```
 
 Import private key to the wallet:
 ```
-/usr/local/bin/bitcoind/bin/bitcoin-cli -regtest importprivkey cQ3JdUMMbtUW8ibfLXWXZhRp6HFBBLk3Nqog5QssekY7df8y8ZUk
+/usr/local/bin/bitcoind/bin/bitcoin-cli -regtest importprivkey [..privateKey..]
 ```
 
 In order to confirm last transactions we need to generate new block:
@@ -110,7 +111,7 @@ Send raw transaction
 
 ## Run multiple bitcoind instances in regtest to simulate multiple nodes
 
-@[Source](http://bitcoin.stackexchange.com/a/39168)
+@[source](http://bitcoin.stackexchange.com/a/39168)
 
 Creating separate bitcoin data directory
 
@@ -130,7 +131,7 @@ rpcport=10340
 discover=0
 ```
 
-Now you need to connect your first node with your 2nd node by sending a `addnode` over the RPC interface. (server should be running)
+Now you need to connect your first node with your 2nd node by sending a `addnode` over the RPC interface (server [should be running](https://github.com/artemdemo/bitcoin-playground#regtest-server))
 
 ```
 /usr/local/bin/bitcoind/bin/bitcoin-cli addnode 127.0.0.1:10340 onetry
@@ -139,5 +140,5 @@ Now you need to connect your first node with your 2nd node by sending a `addnode
 You can than distinct between both nodes with the `-datadir` argument while calling `bitcoin-cli`.
 
 ```
-/usr/local/bin/bitcoind/bin/bitcoin-cli -datadir=~/.bitcoin2/ getinfo
+/usr/local/bin/bitcoind/bin/bitcoin-cli -datadir=/home/artem/.bitcoin2 getinfo
 ```
